@@ -75,7 +75,6 @@ Open the app.py file in any code editor (VS Code, Notepad, etc.).
 Modify the User Inputs section at the very top of the file to test different scenarios:
 
 ```
-Python
 # --- USER INPUTS ---
 MY_EXAM = 'COMEDK'   # Options: 'KCET', 'COMEDK', 'JEE'
 MY_MARKS = 115       # Enter your marks here
@@ -83,7 +82,6 @@ MY_MARKS = 115       # Enter your marks here
 Execute the script in your terminal:
 
 ```
-Bash
 python app.py
 ```
 🚀 Future Roadmap
