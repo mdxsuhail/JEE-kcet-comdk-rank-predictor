@@ -1,105 +1,60 @@
-# 🚀 AI-Powered College Predictor (2025 Production Edition)
+# KCET, COMEDK & JEE Rank and College Predictor
 
-![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python&logoColor=white)
-![Data Source](https://img.shields.io/badge/Data-Official_2025_Round_3-green?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Production_Ready-success?style=for-the-badge)
-![Exam Support](https://img.shields.io/badge/Supports-KCET_%7C_COMEDK_%7C_JEE-orange?style=for-the-badge)
+A Python notebook that estimates an exam rank from marks using polynomial regression, then compares the estimate with a manually maintained sample of engineering-college cutoff data.
 
-## 📖 Executive Summary
-The **AI College Predictor** is a sophisticated Machine Learning tool engineered to guide engineering aspirants in Karnataka through the complex admission landscape.
+> **Project type:** Educational data-analysis prototype. Predictions are illustrative, not official counselling results or admission guarantees.
 
-Unlike generic predictors that rely on static lookup tables, this system utilizes **Polynomial Regression** to model the non-linear relationship between raw marks and rank. It then cross-references this predicted rank against a high-precision database constructed from the **Official COMEDK 2025 Round 3 Allotment List** (Notified Aug 22, 2025).
+## What it does
+- Select KCET, COMEDK or JEE and enter marks in the notebook configuration cell.
+- Fits a separate degree-3 polynomial regression pipeline for each exam.
+- Estimates a rank from the supplied marks.
+- Compares the estimate with cutoff records included in the notebook.
+- Labels matching records as Safe, Likely or Borderline using simple rank-to-cutoff rules.
+- Prints up to ten matching college/branch records.
 
-The tool addresses the "Mark-to-Rank" ambiguity by training on difficulty-calibrated trend lines for **KCET, COMEDK, and JEE Main**, offering students a realistic probability assessment of securing seats in top-tier institutions like **RVCE, BMSCE, and MSRIT**.
+## Implementation
+| Area | Details |
+|---|---|
+| Language | Python |
+| Data handling | pandas, NumPy |
+| Model | scikit-learn PolynomialFeatures(3) + LinearRegression |
+| Interface | Jupyter / Google Colab notebook |
+| Data | Small, manually embedded sample tables |
 
----
-
-## 🏗️ Step 1: The Prediction Engine (Machine Learning)
-The core of the system is a `sklearn` pipeline that transforms raw marks into a predicted rank.
-
-* **Algorithm:** Polynomial Regression (Degree 3).
-* **Why Degree 3?** Rank distribution is not linear. A difference of 5 marks at the top (e.g., 175 vs 180) impacts rank far less than 5 marks in the middle (e.g., 90 vs 95). A 3rd-degree polynomial captures this "bell curve" density perfectly.
-* **Training Data:** Calibrated using 2024-2025 paper difficulty statistics.
-
----
-
-## 🗄️ Step 2: The Database (Official 2025 Cutoffs)
-The backend database is a curated subset of the **2025 Round 3 Engineering Cutoff Ranks**.
-
-* **Source:** Official Allotment PDF (22.08.2025).
-* **Scope:** Covers Tier-1 (Global Placements), Tier-2 (High Value), and Tier-3 (Regional Leaders).
-* **Granularity:** Includes specific branch cutoffs for CSE, ISE, ECE, AI & ML, and Data Science.
-
----
-
-## 🧠 Step 3: The Recommendation Logic
-The system applies a **"Safety Margin Classification"** to every prediction to categorize your chances:
-
-* 🟢 **SAFE:** Your rank is **< 80%** of the cutoff (High Probability).
-* 🟡 **LIKELY:** Your rank is **< 100%** of the cutoff (Moderate Probability).
-* 🔴 **BORDERLINE:** Your rank is slightly above the cutoff (Requires Spot Round/Luck).
-
----
-
-## 📊 Deep-Dive: 2025 Data Analysis
-The project includes hard-coded intelligence derived from the 2025 admission cycle. Below are key insights integrated into the tool:
-
-| Tier | Institution | Branch (CSE) Cutoff (Round 3) | Analysis |
-| :--- | :--- | :--- | :--- |
-| **Tier 1** | **RV College of Engineering (RVCE)** | **542** | Extremely competitive. Closed under Rank 600. |
-| **Tier 1** | **MS Ramaiah (MSRIT)** | **1,341** | Remains the top choice after RVCE. |
-| **Tier 1** | **BMS College of Engineering** | **3,689** | Slightly higher cutoff, offering a wider window. |
-| **Tier 2** | **Dayananda Sagar (DSCE)** | **5,479** | The "Golden Gate" for sub-5k rankers. |
-| **Tier 2** | **Bangalore Inst. of Tech (BIT)** | **9,177** | Excellent value for ranks near 10k. |
-| **Tier 2** | **CMR Institute of Tech (CMRIT)** | **18,084** | Major jump in cutoff, showing high demand. |
-| **Tier 2** | **Sir M Visvesvaraya (Sir MVIT)** | **22,026** | A "Safe Harbor" for ranks between 20k-25k. |
-
-> *Note: All ranks listed are COMEDK GM (General Merit) Cutoffs.*
-
----
-
-## 💻 Installation & Usage
-
-To run this analytics tool on your local machine, follow these steps:
-
-### 📦 Step 1: Install Dependencies
-We use `scikit-learn` for the Machine Learning model and `pandas` for high-performance data handling.
+## Run the notebook
+Open code.ipynb in Jupyter Notebook or Google Colab.
 
 ```bash
 pip install pandas numpy scikit-learn
+jupyter notebook code.ipynb
 ```
 
-⚙️ Step 2: Configure & Run
-Open the app.py file in any code editor (VS Code, Notepad, etc.).
+Edit the configuration values near the beginning of the notebook:
 
-Modify the User Inputs section at the very top of the file to test different scenarios:
-
+```python
+MY_EXAM = "COMEDK"  # "KCET", "COMEDK", or "JEE"
+MY_MARKS = 115
 ```
-# --- USER INPUTS ---
-MY_EXAM = 'COMEDK'   # Options: 'KCET', 'COMEDK', 'JEE'
-MY_MARKS = 115       # Enter your marks here
-```
-Execute the script in your terminal:
 
-```
-python app.py
-```
-🚀 Future Roadmap
-We are actively working on the following features for the V2 release:
+Run the cells to generate the report.
 
-🪑 Seat Matrix Integration: Dynamic adjustment of admission probabilities based on the total live seat availability.
+## Important data and model limitations
+- The notebook uses small, hard-coded marks-to-rank training samples; these are not a validated model trained on a complete official candidate dataset.
+- The college cutoff table is a limited manually entered sample, not a complete or continuously updated seat matrix.
+- The JEE college-rank column is currently a placeholder, so meaningful JEE college matching is not implemented by the present dataset.
+- Category, quota, round, branch availability, seat matrix and year-to-year changes are not fully modelled.
+- A polynomial estimate can be inaccurate outside the supplied training range.
 
-🏷️ Category Support: Adding granular cutoffs for SC, ST, OBC, and Hyderabad-Karnataka (371J) quotas.
+Always verify admission decisions against the relevant exam authority's official counselling data.
 
-🌐 Web Interface: Porting the logic to a Streamlit or Flask web application for public, browser-based access.
+## Repository contents
+- code.ipynb — notebook containing sample data, model pipelines and prediction logic.
 
-⚠️ Disclaimer
-Please Read Carefully:
+## Possible next steps
+- Replace embedded sample values with traceable official datasets.
+- Add category, quota, round and year filters.
+- Evaluate model error on held-out historical data.
+- Add input validation and warnings for out-of-range marks.
+- Build a web interface after validating the underlying data and model.
 
-Predictive Nature: This tool uses statistical modeling. Actual ranks depend on the number of test-takers and the specific difficulty distribution of the 2026 paper.
-
-Data Validity: Cutoff data is strictly from the 2025 Round 3 cycle. Admission trends may shift in 2026 due to new policy changes or seat additions.
-
-Advisory: Use this tool for strategic planning, but always rely on official counseling brochures for final decision-making.
-
-Developed with precision using the Python Science Stack.
+**Author:** Mohammed Suhail · Electronics & Communication Engineering student
